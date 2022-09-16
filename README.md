@@ -6,6 +6,7 @@
 
 ## Descriptions
 - Dolby Atmos soundfx equalizer ported from Razer Phone 2 (bolt) and integrated as a Magisk Module for all supported and rooted devices with Magisk
+- Changes ro.product.brand, ro.product.device, ro.product.manufacturer, & ro.product.model system property, may breaks your platform apps and features functionality
 - Global type soundfx
 
 ## Sources
@@ -18,7 +19,7 @@
 ## Requirements
 - Android 9 and up
 - Architecture 64 bit
-- Magisk Installed
+- Magisk installed
 - Recommended to use Magisk Delta for systemless early init mount manifest.xml if your ROM is Read-Only https://t.me/androidryukimodsdiscussions/100091
 
 ## WARNING!!!
