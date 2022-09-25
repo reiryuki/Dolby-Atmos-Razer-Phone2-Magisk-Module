@@ -334,41 +334,21 @@ for NAMES in $NAME; do
       && [ ! -f $DES ]; then
         ui_print "  ! $DES"
         ui_print "    installation failed."
-        if echo $MAGISK_VER | grep -Eq delta; then
-          ui_print "    Installing $NAMES systemlessly using early init mount..."
-          mkdir -p $EIMDIR/system/lib
-          cp $MODPATH/system_support/lib/$NAMES $EIMDIR/system/lib
-        fi
       fi
       if [ -f $MODPATH/system_support/lib64/$NAMES ]\
       && [ ! -f $DES2 ]; then
         ui_print "  ! $DES2"
         ui_print "    installation failed."
-        if echo $MAGISK_VER | grep -Eq delta; then
-          ui_print "    Installing $NAMES systemlessly using early init mount..."
-          mkdir -p $EIMDIR/system/lib64
-          cp $MODPATH/system_support/lib64/$NAMES $EIMDIR/system/lib64
-        fi
       fi
       if [ -f $MODPATH/system_support/vendor/lib/$NAMES ]\
       && [ ! -f $DES3 ]; then
         ui_print "  ! $DES3"
         ui_print "    installation failed."
-        if echo $MAGISK_VER | grep -Eq delta; then
-          ui_print "    Installing $NAMES systemlessly using early init mount..."
-          mkdir -p $EIMDIR/system/vendor/lib
-          cp $MODPATH/system_support/vendor/lib/$NAMES $EIMDIR/system/vendor/lib
-        fi
       fi
       if [ -f $MODPATH/system_support/vendor/lib64/$NAMES ]\
       && [ ! -f $DES4 ]; then
         ui_print "  ! $DES4"
         ui_print "    installation failed."
-        if echo $MAGISK_VER | grep -Eq delta; then
-          ui_print "    Installing $NAMES systemlessly using early init mount..."
-          mkdir -p $EIMDIR/system/vendor/lib64
-          cp $MODPATH/system_support/vendor/lib64/$NAMES $EIMDIR/system/vendor/lib64
-        fi
       fi
       ui_print " "
     else
@@ -478,7 +458,7 @@ early_init_mount_dir
 
 # find
 chcon -R u:object_r:system_lib_file:s0 $MODPATH/system_support/lib*
-chcon -R u:object_r:same_process_hal_file:s0 $MODPATH/system/vendor/lib*
+chcon -R u:object_r:same_process_hal_file:s0 $MODPATH/system_support/vendor/lib*
 NAME=`ls $MODPATH/system_support/vendor/lib`
 find_file
 rm -rf $MODPATH/system_support
@@ -901,8 +881,8 @@ if [ "`grep_prop dolby.deepbass $OPTIONALS`" != 0 ]; then
   sed -i 's/frequency="11250"/frequency="9000"/g' $FILE
   sed -i 's/frequency="13875"/frequency="11250"/g' $FILE
   sed -i 's/frequency="19688"/frequency="13875"/g' $FILE
-  ui_print " "
 fi
+ui_print " "
 
 # audio rotation
 FILE=$MODPATH/service.sh
@@ -963,13 +943,15 @@ file_check_vendor
 
 # permission
 ui_print "- Setting permission..."
-FILE=`find $MODPATH/system/vendor/bin -type f`
+FILE=`find $MODPATH/system/vendor/bin $MODPATH/system/vendor/odm/bin -type f`
 for FILES in $FILE; do
   chmod 0755 $FILES
   chown 0.2000 $FILES
 done
 chmod 0751 $MODPATH/system/vendor/bin
 chmod 0751 $MODPATH/system/vendor/bin/hw
+chmod 0755 $MODPATH/system/vendor/odm/bin
+chmod 0755 $MODPATH/system/vendor/odm/bin/hw
 DIR=`find $MODPATH/system/vendor -type d`
 for DIRS in $DIR; do
   chown 0.2000 $DIRS
