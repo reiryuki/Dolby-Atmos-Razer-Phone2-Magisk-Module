@@ -14,6 +14,17 @@ resetprop ro.product.model "Phone 2"
 resetprop vendor.audio.dolby.ds2.enabled false
 resetprop vendor.audio.dolby.ds2.hardbypass false
 
+# restart
+if [ "$API" -ge 24 ]; then
+  SVC=audioserver
+else
+  SVC=mediaserver
+fi
+PID=`pidof $SVC`
+if [ "$PID" ]; then
+  killall $SVC
+fi
+
 # function
 stop_service() {
 for NAMES in $NAME; do
@@ -114,27 +125,50 @@ if [ ! -d $MY_PRODUCT ] && [ -d /my_product/etc ]\
   done
 fi
 
-# restart
-PID=`pidof audioserver`
-if [ "$PID" ]; then
-  killall audioserver
-fi
-
 # wait
 sleep 40
-
-# allow
-PKG=com.dolby.daxservice
-if [ "$API" -ge 30 ]; then
-  appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
-fi
-killall $PKG
 
 # allow
 PKG=com.dolby.daxappui
 if [ "$API" -ge 30 ]; then
   appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
 fi
-killall $PKG
+
+# allow
+PKG=com.dolby.daxservice
+if [ "$API" -ge 30 ]; then
+  appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
+fi
+
+# function
+wait_audioserver() {
+PID=`pidof $SVC`
+sleep 180
+NEXTPID=`pidof $SVC`
+}
+
+# wait
+if [ "$API" -ge 24 ]; then
+  SVC=audioserver
+else
+  SVC=mediaserver
+fi
+if [ "`getprop init.svc.$SVC`" == running ]; then
+  until [ "$PID" ] && [ "$NEXTPID" ]\
+  && [ "$PID" == "$NEXTPID" ]; do
+    wait_audioserver
+  done
+else
+  start $SVC
+fi
+
+# restart
+killall com.dolby.daxservice com.dolby.daxappui
+
+
+
+
+
+
 
 
