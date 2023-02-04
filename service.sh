@@ -181,6 +181,7 @@ else
   SVC=mediaserver
 fi
 PROC="com.dolby.daxservice com.dolby.daxappui"
+killall $PROC
 check_audioserver
 
 
