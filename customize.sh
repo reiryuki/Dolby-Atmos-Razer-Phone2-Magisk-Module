@@ -223,7 +223,7 @@ fi
 # check
 NAME=_ZN7android8hardware7details17gBnConstructorMapE
 DES=vendor.dolby.hardware.dms@1.0.so
-LIB=libhidltransport.so
+LIB=libhidlbase.so
 if [ "$IS64BIT" == true ]; then
   LISTS=`strings $MODPATH/system/vendor/lib64/$DES | grep ^lib | grep .so`
   FILE=`for LIST in $LISTS; do echo $SYSTEM/lib64/$LIST; done`
@@ -233,8 +233,8 @@ if [ "$IS64BIT" == true ]; then
   ui_print "$FILE"
   ui_print "  Please wait..."
   if ! grep -q $NAME $FILE; then
-    ui_print "  Using new $LIB 64."
-    cp -f $MODPATH/system_support/lib64/$LIB $MODPATH/system/lib64
+    ui_print "  Using new $LIB 64"
+    mv -f $MODPATH/system_support/lib64/$LIB $MODPATH/system/lib64
   fi
   ui_print " "
 fi
@@ -246,8 +246,8 @@ ui_print "  function at"
 ui_print "$FILE"
 ui_print "  Please wait..."
 if ! grep -q $NAME $FILE; then
-  ui_print "  Using new $LIB."
-  cp -f $MODPATH/system_support/lib/$LIB $MODPATH/system/lib
+  ui_print "  Using new $LIB"
+  mv -f $MODPATH/system_support/lib/$LIB $MODPATH/system/lib
 fi
 ui_print " "
 
@@ -263,6 +263,7 @@ fi
 mv -f $MODPATH/aml.sh $MODPATH/.aml.sh
 
 # mod ui
+MOD_UI=false
 if [ "`grep_prop mod.ui $OPTIONALS`" == 1 ]; then
   APP=DaxUI
   FILE=/sdcard/$APP.apk
@@ -272,6 +273,7 @@ if [ "`grep_prop mod.ui $OPTIONALS`" == 1 ]; then
     cp -f $FILE $DIR
     chmod 0644 $DIR/$APP.apk
     ui_print "  Applied"
+    MOD_UI=true
   else
     ui_print "  ! There is no $FILE file."
     ui_print "    Please place the apk to your internal storage first"
@@ -279,6 +281,16 @@ if [ "`grep_prop mod.ui $OPTIONALS`" == 1 ]; then
   fi
   ui_print " "
 fi
+
+# 36 dB
+PROP=`grep_prop dolby.gain $OPTIONALS`
+if [ "$MOD_UI" != true ] && [ "$PROP" ]\
+&& [ "$PROP" -gt 192 ]; then
+  ui_print "- Using max/min limit 36 dB"
+  cp -rf $MODPATH/system_36dB/* $MODPATH/system
+fi
+rm -rf $MODPATH/system_36dB
+ui_print " "
 
 # cleaning
 ui_print "- Cleaning..."
@@ -752,9 +764,9 @@ remount_ro
 
 # function
 hide_oat() {
-for APPS in $APP; do
+for APP in $APPS; do
   REPLACE="$REPLACE
-  `find $MODPATH/system -type d -name $APPS | sed "s|$MODPATH||"`/oat"
+  `find $MODPATH/system -type d -name $APP | sed "s|$MODPATH||g"`/oat"
 done
 }
 replace_dir() {
@@ -763,49 +775,49 @@ if [ -d $DIR ]; then
 fi
 }
 hide_app() {
-DIR=$SYSTEM/app/$APPS
-MODDIR=/system/app/$APPS
-replace_dir
-DIR=$SYSTEM/priv-app/$APPS
-MODDIR=/system/priv-app/$APPS
-replace_dir
-DIR=$PRODUCT/app/$APPS
-MODDIR=/system/product/app/$APPS
-replace_dir
-DIR=$PRODUCT/priv-app/$APPS
-MODDIR=/system/product/priv-app/$APPS
-replace_dir
-DIR=$MY_PRODUCT/app/$APPS
-MODDIR=/system/product/app/$APPS
-replace_dir
-DIR=$MY_PRODUCT/priv-app/$APPS
-MODDIR=/system/product/priv-app/$APPS
-replace_dir
-DIR=$PRODUCT/preinstall/$APPS
-MODDIR=/system/product/preinstall/$APPS
-replace_dir
-DIR=$SYSTEM_EXT/app/$APPS
-MODDIR=/system/system_ext/app/$APPS
-replace_dir
-DIR=$SYSTEM_EXT/priv-app/$APPS
-MODDIR=/system/system_ext/priv-app/$APPS
-replace_dir
-DIR=$VENDOR/app/$APPS
-MODDIR=/system/vendor/app/$APPS
-replace_dir
-DIR=$VENDOR/euclid/product/app/$APPS
-MODDIR=/system/vendor/euclid/product/app/$APPS
-replace_dir
+for APP in $APPS; do
+  DIR=$SYSTEM/app/$APP
+  MODDIR=/system/app/$APP
+  replace_dir
+  DIR=$SYSTEM/priv-app/$APP
+  MODDIR=/system/priv-app/$APP
+  replace_dir
+  DIR=$PRODUCT/app/$APP
+  MODDIR=/system/product/app/$APP
+  replace_dir
+  DIR=$PRODUCT/priv-app/$APP
+  MODDIR=/system/product/priv-app/$APP
+  replace_dir
+  DIR=$MY_PRODUCT/app/$APP
+  MODDIR=/system/product/app/$APP
+  replace_dir
+  DIR=$MY_PRODUCT/priv-app/$APP
+  MODDIR=/system/product/priv-app/$APP
+  replace_dir
+  DIR=$PRODUCT/preinstall/$APP
+  MODDIR=/system/product/preinstall/$APP
+  replace_dir
+  DIR=$SYSTEM_EXT/app/$APP
+  MODDIR=/system/system_ext/app/$APP
+  replace_dir
+  DIR=$SYSTEM_EXT/priv-app/$APP
+  MODDIR=/system/system_ext/priv-app/$APP
+  replace_dir
+  DIR=$VENDOR/app/$APP
+  MODDIR=/system/vendor/app/$APP
+  replace_dir
+  DIR=$VENDOR/euclid/product/app/$APP
+  MODDIR=/system/vendor/euclid/product/app/$APP
+  replace_dir
+done
 }
 
 # hide
-APP="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
+APPS="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
 hide_oat
-APP="MusicFX MotoDolbyDax3 MotoDolbyV3 OPSoundTuner
-     DolbyAtmos AudioEffectCenter"
-for APPS in $APP; do
-  hide_app
-done
+APPS="MusicFX MotoDolbyDax3 MotoDolbyV3 OPSoundTuner
+      DolbyAtmos AudioEffectCenter"
+hide_app
 
 # stream mode
 FILE=$MODPATH/.aml.sh
@@ -816,10 +828,8 @@ if echo "$PROP" | grep -q m; then
   sed -i 's/musicstream=/musicstream=true/g' $MODPATH/acdb.conf
   ui_print " "
 else
-  APP=AudioFX
-  for APPS in $APP; do
-    hide_app
-  done
+  APPS=AudioFX
+  hide_app
 fi
 if echo "$PROP" | grep -q r; then
   ui_print "- Activating ring stream..."
