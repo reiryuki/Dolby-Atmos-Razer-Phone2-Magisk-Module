@@ -8,6 +8,7 @@
 - Dolby Atmos soundfx equalizer ported from Razer Phone 2 (bolt) and integrated as a Magisk Module for all supported and rooted devices with Magisk
 - Changes/spoofs ro.product.brand to razer, ro.product.device to bolt, ro.product.manufacturer to Razer, & ro.product.model to Phone 2 which may break some system apps and features functionality
 - Global type soundfx
+- Conflicted with vendor.dolby.hardware.dms@2.0-service
 
 ## Sources
 - https://dumps.tadiphone.dev/dumps/razer/bolt bolt-user-9-P-SMR1-RC008-ATT-190626-3239-release-keys
