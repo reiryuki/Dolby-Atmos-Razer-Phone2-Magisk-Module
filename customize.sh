@@ -563,16 +563,19 @@ FILE="$MAGISKTMP/mirror/*/etc/vintf/manifest.xml
       $MAGISKTMP/mirror/*/*/etc/vintf/manifest/*.xml
       /*/etc/vintf/manifest/*.xml /*/*/etc/vintf/manifest/*.xml"
 if [ "`grep_prop dolby.skip.vendor $OPTIONALS`" != 1 ]\
+&& ! df -h $VENDOR | grep 100%\
 && ! grep -A2 vendor.dolby.hardware.dms $FILE | grep -q 1.0; then
   FILE=$VENDOR/etc/vintf/manifest.xml
   patch_manifest
 fi
 if [ "`grep_prop dolby.skip.system $OPTIONALS`" != 1 ]\
+&& ! df -h $SYSTEM | grep 100%\
 && ! grep -A2 vendor.dolby.hardware.dms $FILE | grep -q 1.0; then
   FILE=$SYSTEM/etc/vintf/manifest.xml
   patch_manifest
 fi
 if [ "`grep_prop dolby.skip.system_ext $OPTIONALS`" != 1 ]\
+&& ! df -h $SYSTEM_EXT | grep 100%\
 && ! grep -A2 vendor.dolby.hardware.dms $FILE | grep -q 1.0; then
   FILE=$SYSTEM_EXT/etc/vintf/manifest.xml
   patch_manifest
@@ -586,10 +589,6 @@ if ! grep -A2 vendor.dolby.hardware.dms $FILE | grep -q 1.0; then
     ui_print "  You can fix this by using Magisk Delta/Kitsune Mask."
     ui_print " "
   fi
-  FILES="$MAGISKTMP/mirror/*/etc/vintf/manifest.xml
-         $MAGISKTMP/mirror/*/*/etc/vintf/manifest.xml
-         /*/etc/vintf/manifest.xml /*/*/etc/vintf/manifest.xml"
-  restore
 fi
 
 # patch hwservice contexts
@@ -598,16 +597,19 @@ FILE="$MAGISKTMP/mirror/*/etc/selinux/*_hwservice_contexts
       /*/etc/selinux/*_hwservice_contexts
       /*/*/etc/selinux/*_hwservice_contexts"
 if [ "`grep_prop dolby.skip.vendor $OPTIONALS`" != 1 ]\
+&& ! df -h $VENDOR | grep 100%\
 && ! grep -Eq 'u:object_r:hal_dms_hwservice:s0|u:object_r:default_android_hwservice:s0' $FILE; then
   FILE=$VENDOR/etc/selinux/vendor_hwservice_contexts
   patch_hwservice
 fi
 if [ "`grep_prop dolby.skip.system $OPTIONALS`" != 1 ]\
+&& ! df -h $SYSTEM | grep 100%\
 && ! grep -Eq 'u:object_r:hal_dms_hwservice:s0|u:object_r:default_android_hwservice:s0' $FILE; then
   FILE=$SYSTEM/etc/selinux/plat_hwservice_contexts
   patch_hwservice
 fi
 if [ "`grep_prop dolby.skip.system_ext $OPTIONALS`" != 1 ]\
+&& ! df -h $SYSTEM_EXT | grep 100%\
 && ! grep -Eq 'u:object_r:hal_dms_hwservice:s0|u:object_r:default_android_hwservice:s0' $FILE; then
   FILE=$SYSTEM_EXT/etc/selinux/system_ext_hwservice_contexts
   patch_hwservice
@@ -618,11 +620,6 @@ if ! grep -Eq 'u:object_r:hal_dms_hwservice:s0|u:object_r:default_android_hwserv
     ui_print "! Failed to set hal_dms_hwservice context."
     ui_print " "
   fi
-  FILES="$MAGISKTMP/mirror/*/etc/selinux/*_hwservice_contexts
-         $MAGISKTMP/mirror/*/*/etc/selinux/*_hwservice_contexts
-         /*/etc/selinux/*_hwservice_contexts
-         /*/*/etc/selinux/*_hwservice_contexts"
-  restore
 fi
 
 # remount
@@ -681,8 +678,13 @@ done
 # hide
 APPS="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
 hide_oat
-APPS="MusicFX MotoDolbyDax3 MotoDolbyV3 OPSoundTuner
-      DolbyAtmos AudioEffectCenter"
+if [ "`grep_prop dolby.mod $OPTIONALS`" == 0 ]; then
+  APPS="MusicFX MotoDolbyDax3 MotoDolbyV3 OPSoundTuner
+        DolbyAtmos AudioEffectCenter"
+else
+  APPS="MusicFX MotoDolbyDax3 MotoDolbyV3 OPSoundTuner
+        DolbyAtmos"
+fi
 hide_app
 
 # stream mode
@@ -905,7 +907,7 @@ $MODPATH/system/vendor/bin/hw/vendor.dolby*.hardware.dms*@*-service"
   change_name
   NAME=39537a04bcaa
   NAME2=5f7279756b69
-  FILE=$MODPATH/.aml.sh
+  FILE="$MODPATH/.aml.sh $MODPATH/acdb*.conf"
   change_name
   NAME=452799218539
 #  change_name
