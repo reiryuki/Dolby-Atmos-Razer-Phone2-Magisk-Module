@@ -9,14 +9,14 @@ set -x
 API=`getprop ro.build.version.sdk`
 
 # property
-resetprop ro.audio.ignore_effects false
-resetprop ro.product.brand razer
-resetprop ro.product.device bolt
-resetprop ro.product.manufacturer Razer
-resetprop ro.product.model "Phone 2"
-resetprop ro.dolby.mod_uuid false
-resetprop vendor.audio.dolby.ds2.enabled false
-resetprop vendor.audio.dolby.ds2.hardbypass false
+resetprop -n ro.audio.ignore_effects false
+resetprop -n ro.product.brand razer
+resetprop -n ro.product.device bolt
+resetprop -n ro.product.manufacturer Razer
+resetprop -n ro.product.model "Phone 2"
+resetprop -n ro.dolby.mod_uuid false
+resetprop -n vendor.audio.dolby.ds2.enabled false
+resetprop -n vendor.audio.dolby.ds2.hardbypass false
 
 # restart
 if [ "$API" -ge 24 ]; then
@@ -77,6 +77,7 @@ killall vendor.qti.hardware.vibrator.service\
  android.hardware.sensors@2.0-service-mediatek\
  android.hardware.sensors@2.0-service.multihal\
  android.hardware.health-service.qti
+#skillall vendor.qti.hardware.display.allocator-service
 
 # wait
 sleep 20
