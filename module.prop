@@ -1,7 +1,7 @@
 id=DolbyAtmos
 name=Dolby Atmos Razer Phone 2
-version=v7.5
-versionCode=75
+version=v7.6
+versionCode=76
 author=Rei Ryuki the Fixer
 description=An equalizer global type soundfx ported from Razer Phone 2 (bolt) for any Android 9 and up, 64 bit architecture.
 
