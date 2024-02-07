@@ -772,13 +772,17 @@ elif [ "$PROP" == false ]; then
 elif [ "$PROP" ] && [ "$PROP" != def ] && [ "$PROP" -gt 0 ]; then
   ui_print "- Changing all bass-enhancer-enable value to true"
   sed -i 's|bass-enhancer-enable value="false"|bass-enhancer-enable value="true"|g' $FILE
-  ROWS=`grep bass-enhancer-boost $FILE | sed -e 's|<bass-enhancer-boost value="||g' -e 's|"/>||g'`
-  ui_print "- Default bass-enhancer-boost value:"
-  ui_print "$ROWS"
-  ui_print "- Changing all bass-enhancer-boost value to $PROP"
-  for ROW in $ROWS; do
-    sed -i "s|bass-enhancer-boost value=\"$ROW\"|bass-enhancer-boost value=\"$PROP\"|g" $FILE
-  done
+  ROWS=`grep bass-enhancer-boost $FILE | sed -e 's|<bass-enhancer-boost value="||g' -e 's|"/>||g' -e 's|" />||g'`
+  if [ "$ROWS" ]; then
+    ui_print "- Default bass-enhancer-boost value:"
+    ui_print "$ROWS"
+    ui_print "- Changing all bass-enhancer-boost value to $PROP"
+    for ROW in $ROWS; do
+      sed -i "s|bass-enhancer-boost value=\"$ROW\"|bass-enhancer-boost value=\"$PROP\"|g" $FILE
+    done
+  else
+    ui_print "- This version does not support bass-enhancer-boost"
+  fi
 fi
 if [ "`grep_prop dolby.virtualizer $OPTIONALS`" == 1 ]; then
   ui_print "- Changing all virtualizer-enable value to true"
@@ -888,40 +892,22 @@ $MODPATH/system/vendor/bin/hw/vendor.dolby*.hardware.dms*@*-service"
   change_name
   NAME=$'\x45\x27\x99\x21\x85\x39'
   FILE=$MODPATH/system/vendor/lib*/soundfx/libswdlb.so
-#  change_name
+  change_name
   NAME=$'\xd5\x3e\x26\xda\x02\x53'
   FILE=$MODPATH/system/vendor/lib*/soundfx/libhwdlb.so
-#  change_name
+  change_name
   NAME=$'\xef\x93\x7f\x67\x55\x87'
   FILE=$MODPATH/system/vendor/lib*/soundfx/lib*wdlb.so
   change_name
   NAME=39537a04bcaa
   NAME2=5f7279756b69
-  FILE="$MODPATH/.aml.sh $MODPATH/acdb*.conf"
+  FILE="$MODPATH/.aml.sh
+$MODPATH/acdb.conf"
   change_name
   NAME=452799218539
-#  change_name
+  change_name
   NAME=d53e26da0253
-#  change_name
-fi
-
-# audio rotation
-FILE=$MODPATH/service.sh
-if [ "`grep_prop audio.rotation $OPTIONALS`" == 1 ]; then
-  ui_print "- Enables ro.audio.monitorRotation=true"
-  sed -i '1i\
-resetprop -n ro.audio.monitorRotation true\
-resetprop -n ro.audio.monitorWindowRotation true' $FILE
-  ui_print " "
-fi
-
-# raw
-FILE=$MODPATH/.aml.sh
-if [ "`grep_prop disable.raw $OPTIONALS`" == 0 ]; then
-  ui_print "- Not disables Ultra Low Latency playback (RAW)"
-  ui_print " "
-else
-  sed -i 's|#u||g' $FILE
+  change_name
 fi
 
 # function
@@ -949,6 +935,33 @@ if [ "$LIST32BIT" ]; then
          /lib/libstagefright_soft_ddpdec.so
          /lib/libstagefright_soft_ac4dec.so"
   file_check_vendor
+fi
+
+# fix sensor
+if [ "`grep_prop dolby.fix.sensor $OPTIONALS`" == 1 ]; then
+  ui_print "- Fixing sensors issue"
+  ui_print "  This causes bootloop in some ROMs"
+  sed -i 's|#x||g' $MODPATH/service.sh
+  ui_print " "
+fi
+
+# audio rotation
+FILE=$MODPATH/service.sh
+if [ "`grep_prop audio.rotation $OPTIONALS`" == 1 ]; then
+  ui_print "- Enables ro.audio.monitorRotation=true"
+  sed -i '1i\
+resetprop -n ro.audio.monitorRotation true\
+resetprop -n ro.audio.monitorWindowRotation true' $FILE
+  ui_print " "
+fi
+
+# raw
+FILE=$MODPATH/.aml.sh
+if [ "`grep_prop disable.raw $OPTIONALS`" == 0 ]; then
+  ui_print "- Not disables Ultra Low Latency playback (RAW)"
+  ui_print " "
+else
+  sed -i 's|#u||g' $FILE
 fi
 
 # vendor_overlay
