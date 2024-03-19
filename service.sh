@@ -15,6 +15,7 @@ resetprop -n ro.product.device bolt
 resetprop -n ro.product.manufacturer Razer
 resetprop -n ro.product.model "Phone 2"
 resetprop -n ro.dolby.mod_uuid false
+resetprop -n ro.dolby.music_stream false
 resetprop -n vendor.audio.dolby.ds2.enabled false
 resetprop -n vendor.audio.dolby.ds2.hardbypass false
 

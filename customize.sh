@@ -136,7 +136,6 @@ done
 NAME=_ZN7android8hardware7details17gBnConstructorMapE
 DES=vendor.dolby.hardware.dms@1.0.so
 LIB=libhidlbase.so
-MES="  Dolby Atmos may not work."
 if [ "$IS64BIT" == true ]; then
   DIR=/lib64
   LISTS=`strings $MODPATH/system/vendor$DIR/$DES | grep ^lib | grep .so`
@@ -618,6 +617,9 @@ if echo "$PROP" | grep -q m; then
   ui_print "- Activating music stream..."
   sed -i 's|#m||g' $FILE
   sed -i 's|musicstream=|musicstream=true|g' $MODPATH/acdb.conf
+  sed -i 's|music_stream false|music_stream true|g' $MODPATH/service.sh
+  ui_print "  Sound FX will always be enabled"
+  ui_print "  and cannot be disabled by on/off togglers"
   ui_print " "
 else
   APPS=AudioFX
