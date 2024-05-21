@@ -150,6 +150,27 @@ if [ "$LIST32BIT" ]; then
 fi
 
 # check
+NAME=_ZN7android8String16aSEOS0_
+DES=libhidlbase.so
+LIB=libutils.so
+if [ "$IS64BIT" == true ]; then
+  DIR=/lib64
+  if [ -f $MODPATH/system$DIR/$DES ]; then
+    ui_print "- Replaces /system$DIR/$LIB."
+    mv -f $MODPATH/system_support$DIR/$LIB $MODPATH/system$DIR
+    ui_print " "
+  fi
+fi
+if [ "$LIST32BIT" ]; then
+  DIR=/lib
+  if [ -f $MODPATH/system$DIR/$DES ]; then
+    ui_print "- Replaces /system$DIR/$LIB."
+    mv -f $MODPATH/system_support$DIR/$LIB $MODPATH/system$DIR
+    ui_print " "
+  fi
+fi
+
+# check
 LIBS="libhidltransport.so libhwbinder.so"
 if [ "$IS64BIT" == true ]; then
   DIR=/lib64
@@ -912,7 +933,7 @@ fi
 # raw
 FILE=$MODPATH/.aml.sh
 if [ "`grep_prop disable.raw $OPTIONALS`" == 0 ]; then
-  ui_print "- Not disables Ultra Low Latency playback (RAW)"
+  ui_print "- Does not disable Ultra Low Latency playback (RAW)"
   ui_print " "
 else
   sed -i 's|#u||g' $FILE
