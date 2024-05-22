@@ -29,6 +29,13 @@ if [ "`grep_prop debug.log $OPTIONALS`" == 1 ]; then
   ui_print " "
 fi
 
+# recovery
+if [ "$BOOTMODE" != true ]; then
+  MODPATH_UPDATE=`echo $MODPATH | sed 's|modules/|modules_update/|g'`
+  rm -f $MODPATH/update
+  rm -rf $MODPATH_UPDATE
+fi
+
 # run
 . $MODPATH/function.sh
 
@@ -147,27 +154,6 @@ if [ "$LIST32BIT" ]; then
   LISTS=`strings $MODPATH/system/vendor$DIR/$DES | grep ^lib | grep .so`
   FILE=`for LIST in $LISTS; do echo $SYSTEM$DIR/$LIST; done`
   check_function
-fi
-
-# check
-NAME=_ZN7android8String16aSEOS0_
-DES=libhidlbase.so
-LIB=libutils.so
-if [ "$IS64BIT" == true ]; then
-  DIR=/lib64
-  if [ -f $MODPATH/system$DIR/$DES ]; then
-    ui_print "- Replaces /system$DIR/$LIB."
-    mv -f $MODPATH/system_support$DIR/$LIB $MODPATH/system$DIR
-    ui_print " "
-  fi
-fi
-if [ "$LIST32BIT" ]; then
-  DIR=/lib
-  if [ -f $MODPATH/system$DIR/$DES ]; then
-    ui_print "- Replaces /system$DIR/$LIB."
-    mv -f $MODPATH/system_support$DIR/$LIB $MODPATH/system$DIR
-    ui_print " "
-  fi
 fi
 
 # check

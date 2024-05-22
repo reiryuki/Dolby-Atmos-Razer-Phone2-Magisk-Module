@@ -14,7 +14,6 @@
 - https://dumps.tadiphone.dev/dumps/razer/bolt bolt-user-9-P-SMR1-RC008-ATT-190626-3239-release-keys
 - libswvqe.so: LENOVO TB-J606F
 - libhidlbase.so, libhidltransport.so, & libhwbinder.so: CrDroid ROM Android 13
-- libutils.so: LineageOS ROM Android 14 QPR2
 
 ## Screenshots
 - https://t.me/androidryukimodsdiscussions/66464
