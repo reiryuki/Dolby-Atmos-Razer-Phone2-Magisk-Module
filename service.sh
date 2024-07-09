@@ -79,11 +79,10 @@ killall vendor.qti.hardware.vibrator.service\
  android.hardware.lights-service.xiaomi_mithorium\
  vendor.samsung.hardware.light-service\
  vendor.qti.hardware.lights.service\
- android.hardware.lights-service.qti\
- android.hardware.health-service.qti
+ android.hardware.lights-service.qti
 #skillall vendor.qti.hardware.display.allocator-service\
 #s vendor.qti.hardware.display.composer-service\
-#s camerahalserver qcrilNrd
+#s camerahalserver qcrilNrd mtkfusionrild
 #xkillall android.hardware.sensors@1.0-service\
 #x android.hardware.sensors@2.0-service\
 #x android.hardware.sensors@2.0-service-mediatek\
@@ -215,7 +214,7 @@ for SERVICE in $SERVICES; do
     PID=`pidof $SERVICE`
   fi
 done
-PROC="com.dolby.daxservice com.dolby.daxappui"
+PROC=`cat $MODPATH/package.txt`
 killall $PROC
 check_audioserver
 
