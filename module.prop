@@ -1,8 +1,8 @@
 id=DolbyAtmos
 name=Dolby Atmos Razer Phone 2
-version=v8.9
-versionCode=89
+version=v9.0
+versionCode=90
 author=Rei Ryuki the Fixer
-description=An equalizer global type sound effect ported from Razer Phone 2 (bolt) for any Android 9 and up, 64 bit architecture.
+description=Equalizer global type sound effect ported from Razer Phone 2 (bolt) for any Android 9 (SDK 28) and up, ARM64 architecture.
 
 
