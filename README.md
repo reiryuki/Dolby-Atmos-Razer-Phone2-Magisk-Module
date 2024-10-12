@@ -14,13 +14,13 @@
 - https://dumps.tadiphone.dev/dumps/razer/bolt bolt-user-9-P-SMR1-RC008-ATT-190626-3239-release-keys
 - libswvqe.so: LENOVO TB-J606F
 - system_support: CrDroid ROM Android 13
-- libmagiskpolicy.so: Kitsune Mask R65C33E4F
+- libmagiskpolicy.so: Kitsune Mask R6687BB53
 
 ## Screenshots
 - https://t.me/androidryukimodsdiscussions/66464
 
 ## Requirements
-- ARM64 architecture
+- arm64-v8a architecture
 - Android 9 (SDK 28) and up
 - Magisk or KernelSU installed (Recommended to use Magisk Delta/Kitsune Mask for systemless early init mount manifest.xml if your ROM is Read-Only https://t.me/androidryukimodsdiscussions/100091)
 
