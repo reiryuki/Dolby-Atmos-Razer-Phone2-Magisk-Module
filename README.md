@@ -12,7 +12,7 @@
 
 ## Sources
 - https://dumps.tadiphone.dev/dumps/razer/bolt bolt-user-9-P-SMR1-RC008-ATT-190626-3239-release-keys
-- libswvqe.so: LENOVO TB-J606F
+- libswvqe.so: LENOVO TB-J606F https://t.me/c/1331480009/94136
 - system_support: CrDroid ROM Android 13
 - libmagiskpolicy.so: Kitsune Mask R6687BB53
 
@@ -29,11 +29,11 @@
 
 ## Installation Guide & Download Link
 - Recommended to use Magisk Delta/Kitsune Mask https://t.me/androidryukimodsdiscussions/100091
-- Remove any other else Dolby Magisk module with different name (no need to remove if it's the same name)
+- Remove any other else Dolby MAGISK MODULE with different name (no need to remove if it's the same name)
 - Reboot
 - If you have Dolby in-built in your ROM, then you need to activate data.cleanup=1 at the first time install (READ Optionals bellow!)
 - Install this module https://www.pling.com/p/1531576/ via Magisk app or KernelSU app or Recovery if Magisk installed
-- Install AML Magisk Module https://t.me/androidryukimodsdiscussions/29836 only if using any other else audio mod module
+- Install AML Magisk Module https://t.me/ryukinotes/34 only if using any other else audio mod module
 - If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings
 - Reboot
 - If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot afterwards
@@ -42,13 +42,13 @@
 
 ## Optionals
 - https://t.me/ryukinotes/8
-- Global: https://t.me/androidryukimodsdiscussions/60861
+- Global: https://t.me/ryukinotes/35
 - Stream: https://t.me/androidryukimodsdiscussions/26764
 
 ## Troubleshootings
 - https://t.me/ryukinotes/10
 - https://t.me/ryukinotes/11
-- Global: https://t.me/androidryukimodsdiscussions/29836
+- Global: https://t.me/ryukinotes/34
 
 ## Support & Bug Report
 - https://t.me/androidryukimodsdiscussions/2618
