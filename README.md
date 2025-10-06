@@ -13,7 +13,8 @@
 ## Sources
 - https://dumps.tadiphone.dev/dumps/razer/bolt bolt-user-9-P-SMR1-RC008-ATT-190626-3239-release-keys
 - libswvqe.so: LENOVO TB-J606F https://t.me/c/1331480009/94136
-- system_support: CrDroid ROM Android 13
+- libhidlbase.so, libhidltransport.so, & libhwbinder.so: CrDroid ROM Android 13
+- libutils.so: LineageOS 23 Android 16 BP2A.250605.031.A2 1758630651
 - libmagiskpolicy.so: Kitsune Mask R6687BB53
 
 ## Screenshots
