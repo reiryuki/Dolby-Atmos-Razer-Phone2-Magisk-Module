@@ -762,14 +762,13 @@ done
 APPS="`ls $MODPATH/system/priv-app`
       `ls $MODPATH/system/app`"
 hide_oat
-if [ "`grep_prop dolby.mod $OPTIONALS`" == 0 ]; then
-  APPS="$APPS MusicFX MotoDolbyDax3 MotoDolbyV3 OPSoundTuner
-        DolbyAtmos AudioEffectCenter"
-else
-  APPS="$APPS MusicFX MotoDolbyDax3 MotoDolbyV3 OPSoundTuner
-        DolbyAtmos"
-fi
+APPS="$APPS MusicFX MotoDolbyDax3 MotoDolbyV3 OPSoundTuner
+      DolbyAtmos LunarisDolby"
 hide_app
+if [ "`grep_prop dolby.mod $OPTIONALS`" == 0 ]; then
+  APPS=AudioEffectCenter
+  hide_app
+fi
 
 # stream mode
 FILE=$MODPATH/.aml.sh
