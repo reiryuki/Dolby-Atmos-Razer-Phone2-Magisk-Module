@@ -251,6 +251,11 @@ for LIB in $LIBS; do
     if [ ! "$FILE" ]; then
       ui_print "- Using /system$DIR/$LIB."
       mv -f $MODPATH/system_support$DIR/$LIB $MODPATH/system$DIR
+      FILE=`find $VENDOR$DIR $ODM$DIR -type f -name $LIB`
+      if [ ! "$FILE" ]; then
+        ui_print "  Using /vendor$DIR/$LIB."
+        cp -f $MODPATH/system$DIR/$LIB $MODPATH/system/vendor$DIR
+      fi
       ui_print " "
     fi
   fi
@@ -530,7 +535,7 @@ early_init_mount_dir() {
 if echo $MAGISK_VER | grep -Eq 'delta|kitsune'\
 && [ "`grep_prop dolby.skip.early $OPTIONALS`" != 1 ]; then
   check_data
-  get_flags > /dev/null 2>&1
+  get_flags >/dev/null 2>&1
   if [ "$BOOTMODE" == true ]; then
     if [ "$MAGISK_VER_CODE" -ge 26000 ]; then
       PREINITDEVICE=`grep_prop PREINITDEVICE $INTERNALDIR/config`
