@@ -170,8 +170,8 @@ fi
 # recovery
 mount_partitions_in_recovery
 
-# magisk
-magisk_setup
+# mirror
+mirror_setup
 
 # path
 SYSTEM=`realpath $MIRROR/system`
@@ -180,6 +180,7 @@ PRODUCT=`realpath $MIRROR/product`
 SYSTEM_EXT=`realpath $MIRROR/system_ext`
 ODM=`realpath $MIRROR/odm`
 MY_PRODUCT=`realpath $MIRROR/my_product`
+APEX=`realpath $MIRROR/apex`
 
 # create
 mkdir -p $MODPATH/system/etc/vintf
@@ -229,6 +230,14 @@ fi
 
 # function
 check_function() {
+FILE=`for LIST in $LISTS; do
+        APEX_FILE=$(find $APEX/*$DIR -maxdepth 1 -name $LIST)
+        if [ "$APEX_FILE" ]; then
+          echo $APEX/*$DIR/$LIST
+        else
+          echo $SYSTEM$DIR/$LIST
+        fi
+      done`
 if [ -f $MODPATH/system_support$DIR/$LIB ]; then
   ui_print "- Checking"
   ui_print "$NAME"
@@ -268,14 +277,12 @@ DES=vendor.dolby.hardware.dms@1.0.so
 LIB=libhidlbase.so
 if [ "$IS64BIT" == true ]; then
   DIR=/lib64
-  LISTS=`strings $MODPATH/system/vendor$DIR/$DES | grep ^lib | grep .so`
-  FILE=`for LIST in $LISTS; do echo $SYSTEM$DIR/$LIST; done`
+  LISTS=`strings $MODPATH/system/vendor$DIR/$DES | grep ^lib | grep \.so$`
   check_function
 fi
 if [ "$ABILIST32" ]; then
   DIR=/lib
-  LISTS=`strings $MODPATH/system/vendor$DIR/$DES | grep ^lib | grep .so`
-  FILE=`for LIST in $LISTS; do echo $SYSTEM$DIR/$LIST; done`
+  LISTS=`strings $MODPATH/system/vendor$DIR/$DES | grep ^lib | grep \.so$`
   check_function
 fi
 NAME=_ZN7android8String16aSEOS0_
@@ -284,18 +291,16 @@ LIB=libutils.so
 if [ "$IS64BIT" == true ]; then
   DIR=/lib64
   if [ -f $MODPATH/system$DIR/$DES ]; then
-    LISTS=`strings $MODPATH/system$DIR/$DES | grep ^lib | grep .so\
+    LISTS=`strings $MODPATH/system$DIR/$DES | grep ^lib | grep \.so$\
            | sed "s|$DES||g"`
-    FILE=`for LIST in $LISTS; do echo $SYSTEM$DIR/$LIST; done`
     check_function
   fi
 fi
 if [ "$ABILIST32" ]; then
   DIR=/lib
   if [ -f $MODPATH/system$DIR/$DES ]; then
-    LISTS=`strings $MODPATH/system$DIR/$DES | grep ^lib | grep .so\
+    LISTS=`strings $MODPATH/system$DIR/$DES | grep ^lib | grep \.so$\
            | sed "s|$DES||g"`
-    FILE=`for LIST in $LISTS; do echo $SYSTEM$DIR/$LIST; done`
     check_function
   fi
 fi
@@ -1204,14 +1209,6 @@ $MODPATH/acdb.conf"
   change_name
   NAME=d53e26da0253
   change_name
-fi
-
-# fix sensor
-if [ "`grep_prop dolby.fix.sensor $OPTIONALS`" == 1 ]; then
-  ui_print "- Fixing sensors issue"
-  ui_print "  This causes bootloop in some ROMs"
-  sed -i 's|#x||g' $MODPATH/service.sh
-  ui_print " "
 fi
 
 # audio rotation
