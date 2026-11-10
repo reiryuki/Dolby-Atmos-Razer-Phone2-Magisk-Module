@@ -4,10 +4,9 @@
 - Dolby apps and blobs are owned by Dolby™.
 - The MIT license specified here is for the Magisk Module only, not for Dolby apps and blobs.
 
-## Descriptions
-- Equalizer sound effect ported from Razer Phone 2 (bolt) and integrated as a Magisk Module for all supported and rooted devices with Magisk
+## Description
+- Equalizer global type sound effect ported from Razer Phone 2 (bolt) and integrated as a Magisk Module for all supported and rooted devices with Magisk
 - Changes/spoofs ro.product.brand to razer, ro.product.device to bolt, ro.product.manufacturer to Razer, & ro.product.model to Phone 2 which may break some system apps and features functionality
-- Global type sound effect
 - Conflicted with `vendor.dolby.hardware.dms@2.0-service`
 
 ## Sources
@@ -15,11 +14,24 @@
 - libswvqe.so: LENOVO TB-J606F https://t.me/c/1331480009/94136
 - libhidlbase.so, libhidltransport.so, & libhwbinder.so: CrDroid ROM Android 13
 - libutils.so: LineageOS 23 Android 16 BP2A.250605.031.A2 1758630651
-- libmagiskpolicy.so: Magisk (stable) 30.7 (30700)
+- libmagiskpolicy.so: Magisk (debug) 31.0 (31000)
 
-## Changelog
+## Screenshots
+https://t.me/androidryukimodsdiscussions/66464
 
-v1.0.6
+## Requirements
+- arm64-v8a architecture
+- Android 9 (SDK 28) and up
+- HIDL audio service
+- Magisk or Kitsune Mask or KernelSU or Apatch installed (Recommended to use Magisk Delta/Kitsune Mask for systemless early init mount manifest.xml if your ROM is Read-Only https://t.me/ryukinotes/49)
+
+## Download Links and Changelog
+
+v1.0.7 https://github.com/reiryuki/Dolby-Atmos-Razer-Phone2-Magisk-Module
+- Update libmagiskpolicy.so from Magisk (debug) 31.0 (31000)
+- Add a new optional dolby.mod_xml to let users to use any modified/custom dax-default.xml. Please read Optionals below.
+
+v1.0.6 https://move2link.co/4547506
 - Fix manifest.xml detection bug in some ROMs
 - Fix sepolicy denial
 
@@ -39,7 +51,7 @@ v1.0.3
 - Hides in-bulit LunarisDolby.apk
 
 v1.0.2
-- Update libmagiskpolicy.so from Magisk (stable) 30.7 (30700) (fixes selinux denials in KernelSU)
+- Update libmagiskpolicy.so from Magisk (stable) 30.7 (30700) (fixes sepolicy denials in KernelSU)
 - Does not disable raw playback (You can use Audio Compatibility Patch Reborn Magisk Module instead)
 
 v1.0.1
@@ -59,37 +71,24 @@ v9.8
 - Add libutils.so as system_support
 - Abort installation if fail to mount mirror system
 
-v9.7
-- Fake Kitsune Mask detection
-- Improve /odm and /my_product support detection
-
-## Screenshots
-https://t.me/androidryukimodsdiscussions/66464
-
-## Requirements
-- arm64-v8a architecture
-- Android 9 (SDK 28) and up
-- HIDL audio service
-- Magisk or Kitsune Mask or KernelSU or Apatch installed (Recommended to use Magisk Delta/Kitsune Mask for systemless early init mount manifest.xml if your ROM is Read-Only https://t.me/ryukinotes/49)
+## Download Tutorial
+https://t.me/ryukinotes/97
 
 ## WARNING!!!
 Possibility of bootloop or even softbrick or a service failure on Read-Only ROM if you don't use Magisk Delta/Kitsune Mask.
 
-## Installation Guide & Download Link
+## Installation Guide
 - Recommended to use Magisk Delta/Kitsune Mask https://t.me/ryukinotes/49
 - Remove any other else Dolby MAGISK MODULE with different name (no need to remove if it's the same name)
 - Reboot
 - If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings and install https://github.com/KernelSU-Modules-Repo/meta-overlayfs or https://github.com/KernelSU-Modules-Repo/magic_mount_rs or https://github.com/KernelSU-Modules-Repo/hybrid_mount or https://github.com/maxsteeel/nomount first depending on ROM compatibility
-- If you have Dolby in-built in your ROM, then you need to activate data.cleanup=1 at the first time install (READ Optionals bellow!)
-- Install this module https://move2link.co/4547506 via Magisk app or Kitsune Mask app or KernelSU app or Apatch app or Recovery if Magisk or Kitsune Mask installed
+- If you have Dolby in-built in your ROM, then you need to activate data.cleanup=1 at the first time install (READ Optionals below!)
+- Install this module via Magisk app or Kitsune Mask app or KernelSU app or Apatch app or Recovery if Magisk or Kitsune Mask installed
 - Install AML Magisk Module https://t.me/ryukinotes/34 only if using any other else audio mod module
 - Reboot
 - If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot afterwards
 - If you are using SUList, you need to allow list manually your home launcher app (enable show system apps) and reboot afterwards
 - If you have vibrator, camera, charging/USB, SIM card/RIL, display, brightness, WiFi, thermal, and sensors issues (fingerprint, proximity, gyroscope, etc.), then install https://github.com/reiryuki/Hardware-Services-Restarter-Magisk-Module also
-
-## Download Tutorial
-https://t.me/ryukinotes/97
 
 ## Optionals
 - https://t.me/ryukinotes/8
@@ -101,7 +100,7 @@ https://t.me/ryukinotes/97
 - https://t.me/ryukinotes/11
 - Global: https://t.me/ryukinotes/34
 
-## Support & Bug Report
+## Support and Bug Report
 - https://t.me/ryukinotes/54
 - If you don't do above, issues will be closed immediately
 
@@ -112,7 +111,7 @@ https://t.me/ryukinotes/97
 - @HELLBOY017
 - https://t.me/androidappsportdevelopment
 
-## Sponsors
+## Sponsors and Donation
 https://t.me/ryukinotes/25
 
 
