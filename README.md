@@ -27,7 +27,7 @@ https://t.me/androidryukimodsdiscussions/66464
 
 ## Download Links and Changelog
 
-v1.0.7 https://github.com/reiryuki/Dolby-Atmos-Razer-Phone2-Magisk-Module
+v1.0.7 https://move2link.co/7e9f60f
 - Update libmagiskpolicy.so from Magisk (debug) 31.0 (31000)
 - Add a new optional dolby.mod_xml to let users to use any modified/custom dax-default.xml. Please read Optionals below.
 
